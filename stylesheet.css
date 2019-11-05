@@ -1,0 +1,53 @@
+
+
+body {
+    background-Color: beige;
+}
+
+.container {
+    display:grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(120px, auto) repeat(5, 100px) ;
+    
+}
+
+.container > button {
+    cursor: pointer;
+    font-size: 2rem;
+    color: white;
+    border: 1px solid white;
+    background-color: #566573
+}
+
+.container > button:hover {
+    background-color: #95A5A6;
+    
+}
+
+.big {
+    grid-column: span 2;
+}
+.output{
+    grid-column: 1/-1;
+    background-color: #828282;
+    border: 1px solid white;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    flex-direction: column;
+    padding: 10px;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.prevNum{
+    color: white;
+    font-size: 1.3rem;
+}
+
+.curNum {
+    color: white;
+    font-size:2rem;
+}
