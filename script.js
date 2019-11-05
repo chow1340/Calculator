@@ -6,35 +6,74 @@ class Calculator {
         this.prevNumTextElement = prevNumTextElement;
         this.curNumTextElement = curNumTextElement;
         
+       
+        
     }
 
     clear(){
-        this.prevNum = '';
-        this.curNum = '';
+        this.prevNumTextElement.innerText = ''; 
+        this.curNumTextElement.innerText = '';
         this.operator = undefined;
     }
 
     delete(){
-
+        this.curNumTextElement.innerText = this.curNumTextElement.innerText.slice(0,-1);
+        
     }
     
     appendNumber(number){
        if (number === '.' && this.curNum.includes('.')) return
-       this.curNum = this.curNumTextElement.innerText.toString()+number.toString()
-       /* this.curNum = this.curNum.toString() + number.toString() */
+        this.curNum = this.curNumTextElement.innerText.toString()+number.toString() 
+        
         
     }
 
     chooseOperation(operation){
+        if (this.curNumTextElement.innerText === '') return 
+            
+        if (this.prevNumTextElement.innerText !=='') {
+            this.compute()
+        }
         this.operation = operation;
+        this.prevNum = this.curNum 
+        this.curNum = ''
+        this.prevNumTextElement.innerText = this.prevNum
+        this.curNumTextElement.innerText = this.curNum 
+  
+
     }
     updateDisplay(){
-        this.curNumTextElement.innerText = this.curNum
+        this.curNumTextElement.innerText = this.curNum 
 
     }
 
     compute(){
-
+        let computation
+        const prev = parseFloat(this.prevNumTextElement.innerText);
+        const current = parseFloat(this.curNumTextElement.innerText);
+        if (isNaN(prev) || isNaN(current)) return
+        switch (this.operation){
+            case '+': 
+                computation = prev + current;
+                
+                
+                break
+            case '-':
+                computation = prev - current
+                break
+            case '*':
+                computation = prev * current
+                break
+            case '/':
+                computatioin = prev / current
+                break
+            default:
+                return
+            
+        }
+        this.curNum = computation
+        this.operation = undefined
+        this.prevNumTextElement.innerText = ''
     }
 }
 
@@ -45,7 +84,7 @@ const numbers = document.querySelectorAll('[data-number]')
 const operator = document.querySelectorAll('[data-operator')
 const equals = document.querySelector('[data-equals]')
 const deleteButton = document.querySelector('[data-delete]')
-const clear = document.querySelector('[clear]')
+const clear = document.querySelector('[data-clear]')
 const prevNumTextElement = document.querySelector('[data-prevNum]')
 const curNumTextElement = document.querySelector('[data-curNum')
 
@@ -63,12 +102,26 @@ numbers.forEach(button => {
 
 operator.forEach(button => {
     button.addEventListener('click', () => {
+        if (button.innerText === '') return 
         calculator.chooseOperation(button.innerText);
-        calculator.updateDisplay();
+        
     })
 
 })
 
+equals.addEventListener('click', button => {
+    calculator.compute();
+    calculator.updateDisplay()
+})
+
+clear.addEventListener ('click', button => {
+    calculator.clear();
+    
+})
+
+deleteButton.addEventListener('click', button => {
+    calculator.delete();
+})
 
 
 
