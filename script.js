@@ -24,7 +24,10 @@ class Calculator {
     appendNumber(number){
        if (number === '.' && this.curNum.includes('.')) return
         this.curNum = this.curNumTextElement.innerText.toString()+number.toString() 
-        
+       if (resetNum === true) {
+           this.curNum = number;
+           resetNum = false
+       } 
         
     }
 
@@ -35,11 +38,11 @@ class Calculator {
             this.compute()
         }
         this.operation = operation;
-        this.prevNum = this.curNum 
+        this.prevNum = this.curNum + ' ' + ' ' + operation
         this.curNum = ''
         this.prevNumTextElement.innerText = this.prevNum
         this.curNumTextElement.innerText = this.curNum 
-  
+        
 
     }
     updateDisplay(){
@@ -65,16 +68,18 @@ class Calculator {
                 computation = prev * current
                 break
             case '/':
-                computatioin = prev / current
+                computation = prev / current
                 break
             default:
                 return
             
         }
-        this.curNum = computation
+        
+        this.curNum =computation
         this.operation = undefined
         this.prevNumTextElement.innerText = ''
     }
+
 }
 
 
@@ -87,6 +92,8 @@ const deleteButton = document.querySelector('[data-delete]')
 const clear = document.querySelector('[data-clear]')
 const prevNumTextElement = document.querySelector('[data-prevNum]')
 const curNumTextElement = document.querySelector('[data-curNum')
+var resetNum = false
+
 
 
 
@@ -102,16 +109,20 @@ numbers.forEach(button => {
 
 operator.forEach(button => {
     button.addEventListener('click', () => {
-        if (button.innerText === '') return 
+        
         calculator.chooseOperation(button.innerText);
+        
+        
         
     })
 
 })
 
 equals.addEventListener('click', button => {
+    if (button.innerText === '') return 
     calculator.compute();
-    calculator.updateDisplay()
+    calculator.updateDisplay() 
+    resetNum = true
 })
 
 clear.addEventListener ('click', button => {
